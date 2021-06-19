@@ -15,8 +15,9 @@ dc['appActivity'] = 'multi.parallel.dualspace.cloner.components.ui.MainActivity'
 dc['realDevice'] = 'true'
 dc['automationName'] = 'UiAutomator2'
 dcs.append(dc)
-
-passwords = ['5126','9389', '1234']
+#                my     5        6      2       3
+# passwords = ['5126','9389', '1234', '0616', '9828']
+passwords = ['5126', '0616', '9828', '9389', '1234']
 
 
 numbers={"1": "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.TableLayout/android.widget.TableRow[1]/android.widget.Button[1]",
@@ -30,19 +31,22 @@ numbers={"1": "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout
          "9": "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.TableLayout/android.widget.TableRow[3]/android.widget.Button[3]",
          "0": "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.TableLayout/android.widget.TableRow[4]/android.widget.Button[2]"}
 
-apps = ["/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[1]/android.widget.RelativeLayout/android.widget.ImageView",
-        "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.ImageView[1]",
-        "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.ImageView[2]"]
+apps = ["/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[1]/android.widget.RelativeLayout/android.widget.ImageView[1]",
+        "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.ImageView",
+        "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[3]/android.widget.RelativeLayout/android.widget.ImageView[1]",
+        "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[4]/android.widget.RelativeLayout/android.widget.ImageView[1]",
+        "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[5]/android.widget.RelativeLayout/android.widget.ImageView"]
 
 app_index=0
 
-# data = pd.read_csv('SANJAY JI TESTING BILL 17.06.21.csv') 
-data = pd.read_excel(r'01_04-05-21_40355_61_JDP.xlsx')
-df = pd.DataFrame(data, columns=['Description', 'Biller Name', 'K Number', 'Amount'])
+data = pd.read_csv('New_Bill.csv') 
+# data = pd.read_excel(r'01_04-05-21_40355_61_JDP.xlsx')
+# df = pd.DataFrame(data, columns=['Description', 'Biller Name', 'K Number', 'Amount'])
+df = pd.DataFrame(data)
 length = len(df.index)
 
 file = open('Sheet1_updated.csv', 'w')
-fieldnames = ['Sno', 'Due Date', 'Description', 'Biller Name', 'K Number', 'Amount', 'Status', 'File Name']
+fieldnames = ['Sno', 'Due Date', 'Description', 'Biller Name', 'K Number', 'Amount', 'Status', 'Reason', 'Biller name on bill', 'Amount on bill','Reference no.','App no.']
 thewriter = csv.DictWriter(file, fieldnames=fieldnames)
 thewriter.writeheader()
 
@@ -50,7 +54,7 @@ thewriter.writeheader()
 i=1
 dr = webdriver.Remote('http://localhost:4723/wd/hub', dcs[0])
 
-dr.implicitly_wait(30)
+dr.implicitly_wait(20)
 
 bill_pay_value = 0
 elec_value = 0
@@ -138,7 +142,7 @@ def k_number_input(k):
 
 	confirm = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[4]/android.view.View[3]/android.widget.Button")
 	confirm.click()
-	time.sleep(10)
+	time.sleep(8)
 
 def back():
 	dr.back()
@@ -152,7 +156,7 @@ def pay_now_page(k):
 	biller_name = df.iloc[k]['Biller Name']
 	amount_csv = df.iloc[k]['Amount']
 	print("Pay now page")
-	time.sleep(5)
+	time.sleep(3)
 	customer_name = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[2]/android.view.View[5]/android.view.View[3]").text
 	amount = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[2]/android.view.View[6]/android.widget.EditText").text
 	print("touch action")
@@ -171,12 +175,12 @@ def pay_now_page(k):
 
 	x = 0
 	if biller_name == customer_name:
-		print(amount)
-		print(amount_csv)
-		print(type(amount))
-		print(type(amount_csv))
-		print(int(amount))
-		print(int(amount_csv))
+		# print(amount)
+		# print(amount_csv)
+		# print(type(amount))
+		# print(type(amount_csv))
+		# print(int(amount))
+		# print(int(amount_csv))
 		if str(amount) == str(amount_csv):
 			pay_now = dr.find_element_by_xpath ("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[2]/android.view.View[7]/android.widget.Button")
 			pay_now.click()
@@ -189,7 +193,7 @@ def pay_now_page(k):
 		return [0, customer_name, amount]
 
 
-for k in range(1,4):
+for k in range(0,3):
 	print("Start")
 	# description = df.iloc[k]['Description']
 	# k_num = str(df.iloc[k]['K Number'])
@@ -231,20 +235,37 @@ for k in range(1,4):
 		if x==1:
 			break
 
-	distributor_loop = 1
 	lis = []
 	while(1):
+		distributor_loop = 1
+		kloop=1
 		if x==0:
 			elec()
 		while(1):
-		    distributor_func(k)
-		    k_number_input(k)
-		    break
-		    # if dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[4]/android.view.View[1]/android.view.View/android.widget.ListView/android.view.View/android.widget.TextView"):
-		    # 	thewriter.writerow({'Sno':df.iloc[k]['Sno'], 'Due Date':df.iloc[k]['Due Date'],	'Description':df.iloc[k]['Description'], 'Biller Name':df.iloc[k]['Biller Name'], 'K Number':df.iloc[k]['K Number'],'Amount':df.iloc[k]['Amount'],	'Status': "Not paid", 'File Name':""})
-		    # 	k=k+1
-		    # else:
-		    # 	break
+			distributor_func(k)
+			while(1):
+				k_number_input(k)
+				invalid = ""
+				try:
+					invalid = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[4]/android.view.View[1]/android.view.View/android.widget.ListView/android.view.View/android.widget.TextView")
+				except:
+					pass
+
+				if invalid != "":
+					print("invalid k number")
+					k=k+1
+					kloop=0
+					thewriter.writerow({'Due Date':df.iloc[k]['Due Date'],	'Description':df.iloc[k]['Description'], 'Biller Name':df.iloc[k]['Biller Name'], 'K Number':df.iloc[k]['K Number'],'Amount':df.iloc[k]['Amount'],	'Status': "Not paid", 'Reason':"Wrong K number", 'Biller name on bill':"", 'Amount on bill':"", 'Reference no.':"",'App no.':""})
+				break
+
+			break
+
+		if kloop==0:
+			dr.back()
+			time.sleep(0.3)
+			dr.back()
+			x=0
+			continue
 
 		try:
 			if dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[2]/android.view.View[5]/android.view.View[1]"):
@@ -253,8 +274,6 @@ for k in range(1,4):
 					distributor_loop = 0
 				elif lis[0] == 1:
 					distributor_loop = 1
-				
-				break
 
 		except:
 			oops = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[2]/android.view.View[2]")
@@ -265,8 +284,17 @@ for k in range(1,4):
 			x = billPay()
 			continue
 
-	if distributor_loop == 0:
-		continue
+		if distributor_loop == 0:
+			thewriter.writerow({'Due Date':df.iloc[k]['Due Date'],	'Description':df.iloc[k]['Description'], 'Biller Name':df.iloc[k]['Biller Name'], 'K Number':df.iloc[k]['K Number'],'Amount':df.iloc[k]['Amount'],	'Status': "Not paid", 'Reason':"Either biller name or amount does not match", 'Biller name on bill':lis[1], 'Amount on bill':lis[2], 'Reference no.':"",'App no.':""})
+			k=k+1
+			x=0
+			dr.back()
+			time.sleep(0.3)
+			dr.back()
+			time.sleep(1)
+			continue
+		else:
+			break
 
 
 
@@ -326,52 +354,129 @@ for k in range(1,4):
 	# print("passed pay button")
 	# # time.sleep(20)
 
-	card_no = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.EditText")
-	card_no.send_keys("5405-2900-0122-9019")
-
-	ex_month = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.EditText")
-	ex_month.send_keys("05")
-
-	ex_year = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.EditText[2]")
-	ex_year.send_keys("2025")
-
-	holder_name = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.EditText[2]")
-	holder_name.send_keys("SANJAY JANGID")
-
-	promocode = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView[5]")
-	promocode.click()
-	time.sleep(1)
-	enter_pcode = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.EditText")
-	enter_pcode.send_keys("billpay")
-
-	apply_but = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView[3]")
-	apply_but.click()
-
-	time.sleep(3)
-
-	approve = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView[7]")
-	approve.click()
+	# print(dr.page_source)
 
 	# time.sleep(5)
-	# approve = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView[7]")
-	# approve.click()
 
+	# dr.back()
+
+	# promocode = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView[5]")
+	# promocode.click()
+	# time.sleep(1)
+	# enter_pcode = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.EditText")
+	# enter_pcode.send_keys("billpay")
+
+	# apply_butt = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView[3]")
+	# apply_butt.click()
+
+	# time.sleep(5)
+
+	try:
+		edit_card = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ImageView")
+		edit_card.click()
+
+		time.sleep(3)
+
+
+		card_alias = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/androidx.viewpager.widget.ViewPager/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.EditText")
+		card_alias.send_keys("SANJAY")
+
+		card_no = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/androidx.viewpager.widget.ViewPager/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.EditText[2]")
+		card_no.send_keys("4205-8060-0614-7016")
+
+		ex_month = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/androidx.viewpager.widget.ViewPager/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.EditText")
+		ex_month.send_keys("06")
+
+		ex_year = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/androidx.viewpager.widget.ViewPager/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.EditText[2]")	
+		ex_year.send_keys("2025")
+
+		holder_name = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/androidx.viewpager.widget.ViewPager/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.EditText[3]")
+		holder_name.send_keys("SANJAY JANGID")
+
+		add_card = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/androidx.viewpager.widget.ViewPager/android.widget.ScrollView/android.widget.LinearLayout/android.widget.Button")
+		add_card.click()
+
+		# time.sleep(3)
+
+		# approve = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView[7]")
+		# approve.click()
+
+	except:
+		card_no = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.EditText")
+		card_no.send_keys("4205-8060-0614-7016")
+
+		ex_month = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.EditText")
+		ex_month.send_keys("06")
+
+		ex_year = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.EditText[2]")
+		ex_year.send_keys("2025")
+
+		holder_name = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.EditText[2]")
+		holder_name.send_keys("SANJAY JANGID")
+
+		# print(dr.page_source)
+
+		# print("Approve")
+
+		approve = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView[7]")
+		approve.click()
+
+		time.sleep(5)
+		approve = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView[7]")
+		approve.click() 
+
+
+	print("Pin page")
 	time.sleep(15)
 
-	# pin = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[6]/android.view.View[5]/android.view.View/android.view.View[2]/android.widget.EditText")
-	# pin.send_keys("982802")
-	# time.sleep(3)
-	# submit = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[6]/android.view.View[7]/android.widget.Button[1]")
-	# submit.click()
 
+	pin = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[6]/android.view.View[5]/android.view.View/android.view.View[2]/android.widget.EditText")
+	pin.send_keys("982802")
+	time.sleep(3)
+	submit = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[6]/android.view.View[7]/android.widget.Button[1]")
+	submit.click()
 
+	time.sleep(30)
 
+	transac = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[5]/android.view.View").text
 
+	thewriter.writerow({'Due Date':df.iloc[k]['Due Date'],	'Description':df.iloc[k]['Description'], 'Biller Name':df.iloc[k]['Biller Name'], 'K Number':df.iloc[k]['K Number'],'Amount':df.iloc[k]['Amount'],	'Status': "Paid", 'Reason':"", 'Biller name on bill':lis[1], 'Amount on bill':lis[2], 'Reference no.':str(transac),'App no.':i})
+	dr.back()
+	time.sleep(0.3)
+	dr.back()
 
+	# cancel = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView[6]")
+	# cancel.click()
 
+	# edit_card = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ImageView")
+	# edit_card.click()
 
-	# cross = dr.find_element_by_xpath('//android.widget.TextView[@content-desc="Close"]')
-	# cross.click()
+	# time.sleep(5)
+
+	navigate_up = dr.find_element_by_accessibility_id("Navigate up")
+	navigate_up.click()
+
+	time.sleep(5)
+
+	# print(dr.page_source)
+
+	linked_cards = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView[2]/android.widget.LinearLayout[3]/android.view.ViewGroup/android.widget.TextView")
+	linked_cards.click()
+
+	time.sleep(5)
+
+	delete_card = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/androidx.viewpager.widget.ViewPager/android.widget.ScrollView/android.widget.LinearLayout/android.widget.LinearLayout/androidx.viewpager.widget.ViewPager/android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.ImageView[3]")
+	delete_card.click()
+
+	time.sleep(5)
+
+	yes = dr.find_element_by_xpath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.Button[2]")
+	yes.click()
+
+	time.sleep(7)
+
+	cross = dr.find_element_by_xpath('//android.widget.TextView[@content-desc="Close"]')
+	cross.click()
 
 	# # time.sleep(5)
 
@@ -389,6 +494,6 @@ for k in range(1,4):
 
 	# logout()
 
-	i=i+1
-	if i==3:
-		i=1
+	# i=i+1
+	# if i==5:
+	# 	i=1
